@@ -80,7 +80,13 @@
       "bgm.play": "BGMを再生",
       "bgm.pause": "BGMを一時停止",
       "bgm.none": "BGMは準備中です",
-      "bgm.soon": "BGM準備中"
+      "bgm.soon": "BGM準備中",
+      "bday.today": "今日は{name}の{n}歳の誕生日！",
+      "bday.after": "{name}は{n}歳になりました！",
+      "bday.sub.tsukushi": "Happy Birthday TSUKUSHI 🌸 いつも見てくれてありがとう",
+      "bday.sub.choco": "Happy Birthday CHOCO 🍫 いつも見てくれてありがとう",
+      "bday.age": "{n}さい",
+      "bday.sticker": "{name} {n}さい！"
     },
     en: {
       "title.index": "Tsukushi & Choco's Home",
@@ -151,7 +157,13 @@
       "bgm.play": "Play music",
       "bgm.pause": "Pause music",
       "bgm.none": "Music is coming soon",
-      "bgm.soon": "Music soon"
+      "bgm.soon": "Music soon",
+      "bday.today": "Today is {name}'s {n}th birthday!",
+      "bday.after": "{name} just turned {n}!",
+      "bday.sub.tsukushi": "Happy Birthday TSUKUSHI 🌸 Thank you for always watching",
+      "bday.sub.choco": "Happy Birthday CHOCO 🍫 Thank you for always watching",
+      "bday.age": "{n} yrs",
+      "bday.sticker": "{name} is {n}!"
     }
   };
 
