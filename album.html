@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>つくしとちょこのアルバム</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Yusei+Magic&family=M+PLUS+Rounded+1c:wght@500;700&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main class="wrap" data-page-title="title.album">
+  <header class="album-head">
+    <a class="back" href="index.html" data-i18n="back">← トップへ</a>
+    <h1 class="album-title" data-i18n="album.title">つくしとちょこのアルバム</h1>
+  </header>
+
+  <!-- 物干しボード：えらんだ写真をクリップでつるして、横にメモを貼る -->
+  <section class="board" data-i18n-aria="album.book" aria-label="えらんだ写真">
+    <div class="stage">
+      <div class="hang">
+        <span class="clip" aria-hidden="true"></span>
+        <figure class="snap" id="snap"></figure>
+      </div>
+      <!-- 送りボタンは写真の両側に置いて、写真を見ながら押せるようにする -->
+      <button type="button" class="nav-btn nav-prev" id="prev" data-i18n-aria="album.prev.aria" aria-label="前の写真">‹</button>
+      <button type="button" class="nav-btn nav-next" id="next" data-i18n-aria="album.next.aria" aria-label="次の写真">›</button>
+    </div>
+    <div class="memo">
+      <span class="page-no" id="page-no"></span>
+      <span class="kind-chip" id="kind-chip"></span>
+      <h2 class="book-cap" id="book-cap"></h2>
+      <p class="book-note" id="book-note"></p>
+    </div>
+  </section>
+
+  <section class="shelf" aria-labelledby="shelf-title">
+    <div class="shelf-head">
+      <h2 id="shelf-title" data-i18n="album.list">写真の一覧</h2>
+      <div class="tabs" role="group" data-i18n-aria="album.tabs" aria-label="表示の切り替え">
+        <button type="button" id="tab-all" data-filter="all" aria-pressed="true"><span data-i18n="album.all">すべて</span><span class="count"></span></button>
+        <button type="button" id="tab-photo" data-filter="photo" aria-pressed="false"><span data-i18n="album.photo">写真</span><span class="count"></span></button>
+        <button type="button" id="tab-video" data-filter="video" aria-pressed="false"><span data-i18n="album.video">動画</span><span class="count"></span></button>
+      </div>
+    </div>
+    <div class="line"><div class="strip clothes" id="strip"></div></div>
+  </section>
+
+  <footer>
+    <div class="paws" aria-hidden="true">● ● ●</div>
+    <span data-i18n="footer">© 2026 つくしとちょこのおうち</span>
+  </footer>
+</main>
+
+<script src="site.js"></script>
+<script>
+/* 写真・動画を増やすときは、ここに1つずつ追加します（新しいものを上に）。
+   写真: { type: "photo", src: "images/ファイル名.jpg", caption: { ja: "ひとこと", en: "English" }, note: { ja: "説明", en: "English" } }
+   動画: { type: "video", src: "videos/ファイル名.mp4", poster: "images/サムネイル.jpg", caption: { ja: "…", en: "…" } }
+   英語を書かない場合は日本語が表示されます */
+const items = [
+  { type: "photo", src: "images/choco-sit.jpg",
+    caption: { ja: "ちょこんとおすわり", en: "Sitting pretty" },
+    note: { ja: "ちょこ：名前のとおり、ちょこんと座ってこちらをじっと見ています。", en: "Choco: true to her name, sitting neatly and watching us." },
+    alt: { ja: "床にすわってこちらを見る白茶猫のちょこ", en: "Choco, an orange-and-white cat, sitting and looking at the camera" } },
+  { type: "photo", src: "images/tsukushi-tunnel.jpg",
+    caption: { ja: "トンネルの中から", en: "From the tunnel" },
+    note: { ja: "つくし：爪とぎトンネルの中から、きりっとこっちを見ています。", en: "Tsukushi: looking sharp from inside the scratcher tunnel." },
+    alt: { ja: "爪とぎトンネルの中にいるサビ猫のつくし", en: "Tsukushi, a tortoiseshell cat, inside a cardboard scratcher tunnel" } },
+  { type: "photo", src: "images/choco-bed.jpg",
+    caption: { ja: "ふわふわベッドで", en: "In the fluffy bed" },
+    note: { ja: "ちょこ：ピンクのベッドでくるんと丸まって、ひとやすみ。", en: "Choco: curled up for a rest in the pink bed." },
+    alt: { ja: "ピンクのベッドで丸まる白茶猫のちょこ", en: "Choco curled up in a pink bed" } },
+  { type: "photo", src: "images/tsukushi-shrimp.jpg",
+    caption: { ja: "エビといっしょ", en: "With my shrimp" },
+    note: { ja: "つくし：爪とぎボウルにすっぽり。エビのおもちゃといっしょに、上目づかい。", en: "Tsukushi: snug in the scratcher bowl with her shrimp toy, looking up." },
+    alt: { ja: "爪とぎボウルの中でエビのおもちゃと寝ころぶつくし", en: "Tsukushi lying in a scratcher bowl next to a shrimp toy" } },
+  { type: "photo", src: "images/tsukushi-stretch.jpg",
+    caption: { ja: "のびーん", en: "Big stretch" },
+    note: { ja: "つくし：床の上で、おもいっきりのびのび。これが噂のPUMAつくし。", en: "Tsukushi: stretching out as far as she can on the floor. Behold, the rumored PUMA Tsukushi." },
+    alt: { ja: "床の上で体をのばすつくし", en: "Tsukushi stretching out on the floor" } }
+  // 増やすときは、ここに { type: "photo", src: "images/ファイル名.jpg", caption: { ja: "…", en: "…" }, note: { ja: "…", en: "…" } } を追加します
+];
+
+const pick = v => (v && typeof v === "object") ? (v[SITE.lang] || v.ja || "") : (v || "");
+const strip = document.getElementById("strip");
+const snap = document.getElementById("snap");
+let shown = items;
+let current = 0;
+
+document.querySelectorAll(".tabs button").forEach(btn => {
+  const f = btn.dataset.filter;
+  btn.querySelector(".count").textContent = f === "all" ? items.length : items.filter(i => i.type === f).length;
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".tabs button").forEach(b => b.setAttribute("aria-pressed", b === btn));
+    shown = f === "all" ? items : items.filter(i => i.type === f);
+    renderStrip();
+    select(0);
+  });
+});
+
+function renderStrip() {
+  strip.innerHTML = "";
+  if (!shown.length) {
+    const p = document.createElement("p");
+    p.className = "empty";
+    p.textContent = SITE.t("album.empty");
+    strip.append(p);
+    return;
+  }
+  shown.forEach((item, idx) => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.setAttribute("aria-label", pick(item.caption));
+    const img = document.createElement("img");
+    img.src = item.poster || item.src; img.alt = ""; img.loading = "lazy";
+    b.append(img);
+    const cap = document.createElement("span");
+    cap.className = "cap"; cap.textContent = pick(item.caption);
+    b.append(cap);
+    if (item.type === "video") {
+      const m = document.createElement("span");
+      m.className = "vmark"; m.textContent = "▶";
+      b.append(m);
+    }
+    b.addEventListener("click", () => select(idx));
+    strip.append(b);
+  });
+}
+
+function select(idx) {
+  if (!shown.length) {
+    snap.innerHTML = '<p class="book-empty">' + SITE.t("album.bookempty") + '</p>';
+    document.getElementById("page-no").textContent = "No. 00 / 00";
+    document.getElementById("kind-chip").textContent = SITE.t("album.photo");
+    document.getElementById("book-cap").textContent = SITE.t("album.title");
+    document.getElementById("book-note").textContent = SITE.t("album.empty");
+    return;
+  }
+  current = (idx + shown.length) % shown.length;
+  const item = shown[current];
+  snap.innerHTML = "";
+  if (item.type === "video") {
+    const v = document.createElement("video");
+    v.src = item.src; v.controls = true; v.playsInline = true;
+    if (item.poster) v.poster = item.poster;
+    snap.append(v);
+  } else {
+    const img = document.createElement("img");
+    img.src = item.src; img.alt = pick(item.alt) || pick(item.caption);
+    snap.append(img);
+  }
+  // 選んだ写真が一覧の見える位置に来るようにする
+  const btn = strip.querySelectorAll("button")[current];
+  const line = strip.parentElement;
+  if (btn && line) line.scrollTo({ left: btn.offsetLeft - (line.clientWidth - btn.offsetWidth) / 2, behavior: "smooth" });
+  const n = String(current + 1).padStart(2, "0");
+  document.getElementById("page-no").textContent = `No. ${n} / ${String(shown.length).padStart(2, "0")}`;
+  document.getElementById("kind-chip").textContent = SITE.t(item.type === "video" ? "album.video" : "album.photo");
+  document.getElementById("book-cap").textContent = pick(item.caption);
+  document.getElementById("book-note").textContent = pick(item.note);
+  strip.querySelectorAll("button").forEach((b, i) => b.setAttribute("aria-current", i === current));
+}
+
+document.getElementById("prev").addEventListener("click", () => select(current - 1));
+document.getElementById("next").addEventListener("click", () => select(current + 1));
+document.addEventListener("keydown", e => {
+  if (e.key === "ArrowLeft") select(current - 1);
+  if (e.key === "ArrowRight") select(current + 1);
+});
+SITE.onLang(() => { renderStrip(); if (shown.length) select(current); });
+
+renderStrip();
+select(0);
+</script>
+</body>
+</html>

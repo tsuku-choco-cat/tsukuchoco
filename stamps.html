@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>つくしのLINEスタンプ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Yusei+Magic&family=M+PLUS+Rounded+1c:wght@500;700&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main class="wrap" data-page-title="title.stamps">
+  <header class="album-head">
+    <a class="back" href="index.html" data-i18n="back">← トップへ</a>
+    <h1 class="album-title" data-i18n="stamps.title">LINEスタンプ・絵文字</h1>
+  </header>
+  <p class="lead-small" data-i18n="stamps.lead">サビ猫つくしのLINEスタンプと絵文字です。気になるものはLINE STOREでチェックしてにゃ。</p>
+
+  <section class="cat" id="cat-sticker" aria-labelledby="h-sticker">
+    <h2 class="cat-head" id="h-sticker"><span data-i18n="stamps.sticker">スタンプ</span> <span class="num"></span></h2>
+    <div class="packs"></div>
+  </section>
+
+  <section class="cat" id="cat-emoji" aria-labelledby="h-emoji">
+    <h2 class="cat-head" id="h-emoji"><span data-i18n="stamps.emoji">絵文字</span> <span class="num"></span></h2>
+    <div class="packs"></div>
+  </section>
+
+  <footer>
+    <div class="paws" aria-hidden="true">● ● ●</div>
+    <span data-i18n="footer">© 2026 つくしとちょこのおうち</span>
+  </footer>
+</main>
+
+<script src="site.js"></script>
+<script>
+/* 新しいスタンプ・絵文字が出たら、ここに追加します。
+   kind: "sticker"（スタンプ）または "emoji"（絵文字）
+   images: プレビュー画像（stamps/ フォルダ内）。空でも表示できます */
+const packs = [
+  { kind: "sticker", name: "サビ猫のやさしいお仕事ことば", count: 24, desc: { ja: "頑張る毎日に、サビ猫つくしのほっこりスタンプ☆お仕事で使いやすい言葉を中心に、やさしく使えるスタンプを24個つめこみました♪", en: "Cozy stickers of Tsukushi the tortoiseshell for busy days, with 24 gentle phrases that are handy at work." },
+    url: "https://store.line.me/stickershop/product/34120792/ja", images: [] },
+  { kind: "sticker", name: "サビ猫のやさしい博多弁", count: 16, desc: { ja: "ちょっとビビりで甘えん坊な、我が家のサビ猫つくし。やさしい博多弁で気持ちに寄り添う、ほっこり使えるスタンプです☆", en: "Our timid, cuddly tortoiseshell Tsukushi, speaking gentle Hakata dialect to warm your heart." },
+    url: "https://store.line.me/stickershop/product/34013991/ja", images: [] },
+  { kind: "sticker", name: "サビ猫の毎日使えるスタンプ", count: 24, desc: { ja: "サビ猫つくしのシンプルで使いやすいスタンプです。あいさつやリアクションなど毎日使える言葉を集めました。", en: "Simple, easy-to-use stickers of Tsukushi with greetings and reactions for every day." },
+    url: "https://store.line.me/stickershop/product/33939935/ja", images: [] },
+  { kind: "sticker", name: "サビ猫のやさしい日常(博多弁入り)", count: 16, desc: { ja: "ちょっとビビりで甘えん坊な、我が家のサビ猫つくしスタンプ★", en: "Stickers of our timid, cuddly tortoiseshell Tsukushi (with some Hakata dialect)." },
+    url: "https://store.line.me/stickershop/product/33864644/ja", images: [] },
+  { kind: "sticker", name: "サビ猫のつくし（日常スタンプ①）", count: 8, desc: { ja: "ちょっとビビりで甘えん坊な、我が家のサビ猫つくしの日常スタンプです★", en: "Everyday stickers of our timid, cuddly tortoiseshell Tsukushi." },
+    url: "https://store.line.me/stickershop/product/33772318/ja", images: [] },
+  { kind: "emoji", name: "サビ猫のほっこり絵文字", count: 16, desc: { ja: "サビ猫さんの表情や、日常で使いやすいモチーフを集めたほっこり絵文字です★猫好きさん、サビ猫好きさんに♡", en: "Cozy emoji of tortoiseshell expressions and everyday motifs. For cat lovers and tortie fans♡" },
+    url: "https://store.line.me/emojishop/product/6a0e633ed387770800d849ab/ja", images: [] }
+];
+
+function render() {
+for (const kind of ["sticker", "emoji"]) {
+  const sec = document.getElementById("cat-" + kind);
+  const list = packs.filter(p => p.kind === kind);
+  sec.querySelector(".num").textContent = SITE.t("stamps.sets", { n: list.length });
+  const box = sec.querySelector(".packs");
+  box.innerHTML = "";
+  for (const p of list) {
+    const card = document.createElement("article");
+    card.className = "pack k-" + kind;
+    const pv = document.createElement("div");
+    pv.className = "preview";
+    if (p.images.length) {
+      p.images.slice(0, 8).forEach(src => {
+        const img = document.createElement("img");
+        img.src = src; img.alt = ""; img.loading = "lazy";
+        pv.append(img);
+      });
+    } else {
+      const ph = document.createElement("span");
+      ph.className = "ph";
+      ph.textContent = SITE.t("stamps.ph");
+      pv.append(ph);
+    }
+    const body = document.createElement("div");
+    const h = document.createElement("h3");
+    h.textContent = p.name;
+    const meta = document.createElement("div");
+    meta.className = "meta";
+    meta.innerHTML = `<span class="chip kind">${SITE.t(kind === "sticker" ? "stamps.sticker" : "stamps.emoji")}</span><span class="chip">${SITE.t("stamps.count", { n: p.count })}</span>`;
+    const d = document.createElement("p");
+    d.textContent = typeof p.desc === "object" ? (p.desc[SITE.lang] || p.desc.ja) : p.desc;
+    body.append(h, meta, d);
+    const a = document.createElement("a");
+    a.className = "buy"; a.href = SITE.lineUrl(p.url); a.target = "_blank"; a.rel = "noopener";
+    a.textContent = SITE.t("stamps.buy");
+    card.append(pv, body, a);
+    box.append(card);
+  }
+}
+}
+render();
+SITE.onLang(render);
+</script>
+</body>
+</html>

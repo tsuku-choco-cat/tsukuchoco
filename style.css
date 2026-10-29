@@ -1,0 +1,805 @@
+/* つくしとちょこのおうち 共通スタイル（リリーのおうちと同じテイスト）
+   Layout: 上部にリンク集 → 2匹の丸窓 → 2匹のプロフィール → ライブ配信 → アルバム入口。アルバムは別ページ */
+:root {
+  --bg: #fdf3ea;          /* ひだまりのアプリコット */
+  --dot: #f6e2d0;         /* ギンガムの線・薄い面 */
+  --card: #fffdf9;
+  --ink: #3a2a22;         /* サビ猫の黒茶 */
+  --muted: #86705f;
+  --accent: #f3c9a4;      /* サビ猫のオレンジ（淡） */
+  --accent-deep: #c7652a; /* サビ猫のオレンジ（濃）・文字用 */
+  --honey: #f2cf7e;
+  --mint: #b9d8bf;        /* セージ */
+  --lilac: #d6cbe8;
+  --red: #f0b3a3;         /* YouTube */
+  --on-color: #3a2a22;    /* 色面の上の文字・アイコン（両テーマ共通） */
+  --shadow: rgba(80, 45, 20, .13);
+  --font-pop: "Yusei Magic", "Hiragino Maru Gothic ProN", "Yu Gothic", sans-serif;
+  --font-body: "M PLUS Rounded 1c", "Hiragino Maru Gothic ProN", "Yu Gothic", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #241a15; --dot: #2f221b; --card: #33261f; --ink: #fbefe4; --muted: #ccb6a4;
+    --accent: #e9b084; --accent-deep: #f2a46a; --honey: #f2cf7e; --mint: #b9d8bf; --lilac: #d6cbe8; --red: #f0b3a3;
+    --shadow: rgba(0, 0, 0, .38);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #241a15; --dot: #2f221b; --card: #33261f; --ink: #fbefe4; --muted: #ccb6a4;
+  --accent: #e9b084; --accent-deep: #f2a46a; --honey: #f2cf7e; --mint: #b9d8bf; --lilac: #d6cbe8; --red: #f0b3a3;
+  --shadow: rgba(0, 0, 0, .38);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background-color: var(--bg);
+  background-image: radial-gradient(var(--dot) 18%, transparent 19%), radial-gradient(var(--dot) 18%, transparent 19%);
+  background-size: 44px 44px;
+  background-position: 0 0, 22px 22px;
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.7;
+}
+img { max-width: 100%; }
+.wrap {
+  max-width: 960px;
+  margin: 0 auto;
+  padding-inline: 16px;
+  padding-block: 16px 28px;
+  display: grid;
+  gap: 22px;
+}
+
+/* ---------- Links (top) ---------- */
+.links {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+.link {
+  --c: var(--accent);
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: var(--card);
+  border-radius: 20px;
+  border: 3px solid var(--c);
+  box-shadow: 0 5px 0 var(--c);
+  color: var(--ink);
+  text-decoration: none;
+  transition: transform .18s ease, box-shadow .18s ease;
+  min-width: 0;
+}
+.link:hover { transform: translateY(-3px) rotate(-1.5deg); box-shadow: 0 8px 0 var(--c); }
+.link:active { transform: translateY(3px); box-shadow: 0 2px 0 var(--c); }
+.link:focus-visible { outline: 3px dashed var(--ink); outline-offset: 4px; }
+.link .icon {
+  flex: none;
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  display: grid; place-items: center;
+  background: var(--c);
+  color: var(--on-color);
+}
+.link .icon svg { width: 22px; height: 22px; }
+.link .label { display: grid; min-width: 0; line-height: 1.3; }
+.link b { font-family: var(--font-pop); font-weight: 400; font-size: 13px; overflow-wrap: anywhere; }
+.link small { font-size: 11px; color: var(--muted); }
+.link .badge {
+  position: absolute; top: -9px; right: -6px;
+  font-family: var(--font-pop); font-size: 10px;
+  background: var(--ink); color: var(--bg);
+  border-radius: 999px; padding: 1px 8px;
+  transform: rotate(10deg);
+}
+.l-ig { --c: var(--accent); }
+.l-tt { --c: var(--lilac); }
+.l-yt { --c: var(--red); }
+.l-line { --c: var(--mint); }
+
+/* ---------- Hero ---------- */
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  align-items: center;
+  gap: 28px;
+}
+.photo { position: relative; width: min(100%, 380px); justify-self: center; }
+.photo .frame {
+  aspect-ratio: 1 / 1;
+  max-width: 100%;
+  border-radius: 58% 42% 47% 53% / 52% 46% 54% 48%;
+  overflow: hidden;
+  border: 7px solid var(--card);
+  box-shadow: 0 0 0 4px var(--accent), 0 14px 30px var(--shadow);
+  animation: blob 9s ease-in-out infinite;
+}
+.photo .frame img { width: 100%; height: 100%; object-fit: cover; object-position: 38% 40%; display: block; }
+@keyframes blob { 50% { border-radius: 45% 55% 52% 48% / 46% 54% 46% 54%; } }
+.sticker {
+  position: absolute;
+  font-family: var(--font-pop);
+  font-size: 13px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--honey);
+  color: var(--on-color);
+  box-shadow: 0 4px 0 rgba(80, 45, 20, .15);
+  white-space: nowrap;
+}
+.sticker.s1 { top: 6%; right: -4%; transform: rotate(8deg); }
+.sticker.s2 { bottom: 8%; left: -4%; transform: rotate(-7deg); background: var(--mint); }
+
+.intro { min-width: 0; }
+.hello {
+  display: inline-block;
+  font-family: var(--font-pop);
+  font-size: 13px;
+  letter-spacing: .08em;
+  color: var(--accent-deep);
+  background: var(--card);
+  border: 2px dashed var(--accent);
+  border-radius: 999px;
+  padding: 2px 14px;
+}
+h1 {
+  margin: 8px 0 4px;
+  font-family: var(--font-pop);
+  font-weight: 400;
+  font-size: clamp(48px, 9vw, 84px);
+  line-height: 1.05;
+  letter-spacing: .02em;
+  text-wrap: balance;
+  text-shadow: 3px 3px 0 var(--dot), 6px 6px 0 var(--accent);
+}
+.en { font-family: var(--font-pop); font-size: 18px; color: var(--muted); letter-spacing: .25em; margin: 0; }
+.lead { margin: 12px 0 0; max-width: 34em; }
+
+/* ---------- Profile ---------- */
+.profile {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 2fr);
+  gap: 20px;
+  align-items: center;
+  background: var(--card);
+  border-radius: 32px;
+  padding: 22px;
+  box-shadow: 0 10px 24px var(--shadow);
+}
+.bubble {
+  position: relative;
+  margin: 0;
+  background: var(--accent);
+  color: var(--on-color);
+  font-family: var(--font-pop);
+  font-size: 16px;
+  line-height: 1.6;
+  padding: 16px 18px;
+  border-radius: 24px;
+  text-wrap: balance;
+}
+.bubble::after {
+  content: "";
+  position: absolute;
+  bottom: -14px; left: 28px;
+  border: 8px solid transparent;
+  border-top: 10px solid var(--accent);
+  border-right: 10px solid var(--accent);
+}
+.bubble small { display: block; font-family: var(--font-body); font-weight: 700; font-size: 12px; margin-top: 6px; }
+.section-title { font-family: var(--font-pop); font-weight: 400; font-size: 16px; margin: 0 0 10px; color: var(--accent-deep); }
+.facts { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; margin: 0; }
+.facts div { background: var(--bg); border-radius: 16px; padding: 8px 12px; min-width: 0; }
+.facts dt { font-size: 11px; color: var(--muted); font-weight: 700; letter-spacing: .06em; }
+.facts dd { margin: 0; font-weight: 700; font-size: 14px; line-height: 1.45; font-variant-numeric: tabular-nums; }
+
+/* ---------- CM banner ---------- */
+.cm {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 20px;
+  background: var(--card);
+  border: 3px solid var(--ink);
+  border-radius: 999px;
+  box-shadow: 0 6px 0 var(--ink);
+  color: var(--ink);
+  text-decoration: none;
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+.cm:hover { transform: translateY(-3px); box-shadow: 0 9px 0 var(--ink); }
+.cm:active { transform: translateY(3px); box-shadow: 0 2px 0 var(--ink); }
+.cm:focus-visible { outline: 3px dashed var(--accent-deep); outline-offset: 4px; }
+.cm .play { flex: none; width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; background: var(--accent); color: var(--on-color); }
+.cm .play svg { width: 22px; height: 22px; margin-left: 3px; }
+.cm .txt { min-width: 0; flex: 1; display: grid; line-height: 1.4; }
+.cm .tag { font-family: var(--font-pop); font-size: 11px; color: var(--accent-deep); letter-spacing: .12em; }
+.cm b { font-family: var(--font-pop); font-weight: 400; font-size: 17px; }
+.cm .go { flex: none; font-family: var(--font-pop); font-size: 13px; background: var(--honey); color: var(--on-color); border-radius: 999px; padding: 4px 14px; }
+
+/* ---------- Album teaser (top) ---------- */
+.album-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 20px;
+  padding: 18px 22px;
+  background: var(--card);
+  border-radius: 32px;
+  box-shadow: 0 10px 24px var(--shadow);
+  color: var(--ink);
+  text-decoration: none;
+  transition: transform .2s ease;
+}
+.album-card:hover { transform: translateY(-3px); }
+.album-card:focus-visible { outline: 3px dashed var(--accent-deep); outline-offset: 4px; }
+.album-card p { margin: 0; color: var(--muted); font-size: 13px; }
+.album-card .go { display: inline-block; margin-top: 10px; font-family: var(--font-pop); font-size: 13px; background: var(--accent); color: var(--on-color); border-radius: 999px; padding: 4px 16px; }
+.thumbs { display: flex; padding-right: 10px; }
+.thumbs img {
+  width: 84px; height: 104px; object-fit: cover;
+  border: 5px solid var(--card); border-radius: 6px;
+  box-shadow: 0 6px 14px var(--shadow);
+  margin-right: -14px;
+}
+.thumbs img:nth-child(1) { transform: rotate(-6deg); }
+.thumbs img:nth-child(2) { transform: rotate(3deg) translateY(-6px); }
+.thumbs img:nth-child(3) { transform: rotate(-2deg); }
+
+/* ---------- Album page ---------- */
+.album-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
+.back {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--font-pop); font-size: 13px;
+  color: var(--ink); text-decoration: none;
+  background: var(--card); border: 3px solid var(--accent); box-shadow: 0 4px 0 var(--accent);
+  border-radius: 999px; padding: 4px 14px;
+}
+.back:focus-visible { outline: 3px dashed var(--ink); outline-offset: 3px; }
+.album-title { margin: 0; font-family: var(--font-pop); font-weight: 400; font-size: clamp(26px, 5vw, 38px); text-shadow: 3px 3px 0 var(--accent); }
+
+/* 見開きアルバム */
+.book {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  background: var(--accent);
+  border-radius: 20px;
+  padding: 12px;
+  box-shadow: 0 14px 30px var(--shadow), inset 0 0 0 2px var(--card);
+}
+.book::before {
+  content: "";
+  position: absolute; top: 12px; bottom: 12px; left: 50%;
+  width: 34px; transform: translateX(-50%);
+  background: linear-gradient(90deg, transparent, var(--shadow) 45%, var(--shadow) 55%, transparent);
+  pointer-events: none; z-index: 1;
+}
+.page {
+  min-width: 0;
+  background-color: var(--card);
+  padding: 22px;
+  min-height: 380px;
+  display: grid;
+}
+.page.left { border-radius: 10px 4px 4px 10px; place-items: center; }
+.page.right {
+  border-radius: 4px 10px 10px 4px;
+  background-image: repeating-linear-gradient(transparent 0 31px, var(--dot) 31px 33px);
+  align-content: center; gap: 12px; padding-inline: 32px;
+}
+.snap {
+  position: relative;
+  max-width: 100%;
+  background: var(--card);
+  padding: 8px 8px 8px;
+  border-radius: 4px;
+  box-shadow: 0 8px 20px var(--shadow);
+  transform: rotate(-2deg);
+}
+.snap::before, .snap::after {
+  content: "";
+  position: absolute; width: 70px; height: 22px;
+  background: var(--accent); opacity: .85;
+  box-shadow: 0 1px 2px var(--shadow);
+}
+.snap::before { top: -10px; left: -18px; transform: rotate(-35deg); }
+.snap::after { bottom: -10px; right: -18px; transform: rotate(-35deg); }
+.snap img, .snap video { display: block; max-width: 100%; max-height: 380px; width: auto; height: auto; border-radius: 2px; }
+.page-no { font-family: var(--font-pop); font-size: 12px; letter-spacing: .15em; color: var(--accent-deep); font-variant-numeric: tabular-nums; }
+.book-cap { margin: 0; font-family: var(--font-pop); font-weight: 400; font-size: clamp(22px, 3.4vw, 32px); line-height: 1.35; text-wrap: balance; }
+.book-note { margin: 0; color: var(--muted); line-height: 33px; }
+.kind-chip { justify-self: start; font-size: 11px; font-weight: 700; border-radius: 999px; padding: 1px 10px; background: var(--honey); color: var(--on-color); }
+.book-nav { display: flex; gap: 8px; margin-top: 6px; }
+.book-nav button {
+  font: inherit; font-family: var(--font-pop); font-size: 13px;
+  background: var(--card); color: var(--ink);
+  border: 3px solid var(--accent); box-shadow: 0 4px 0 var(--accent);
+  border-radius: 999px; padding: 3px 16px; cursor: pointer;
+}
+.book-nav button:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--accent); }
+.book-nav button:focus-visible { outline: 3px dashed var(--ink); outline-offset: 2px; }
+
+/* 一覧 */
+.shelf { display: grid; gap: 10px; }
+.shelf-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; }
+.shelf-head h2 { margin: 0; font-family: var(--font-pop); font-weight: 400; font-size: 16px; }
+.tabs { display: flex; flex-wrap: wrap; gap: 8px; }
+.tabs button {
+  font: inherit; font-family: var(--font-pop); font-size: 12px;
+  color: var(--ink); background: var(--card);
+  border: 2px solid var(--accent); border-radius: 999px;
+  padding: 2px 12px; cursor: pointer;
+}
+.tabs button[aria-pressed="true"] { background: var(--accent); color: var(--on-color); }
+.tabs button:focus-visible { outline: 3px dashed var(--ink); outline-offset: 2px; }
+.tabs .count { font-family: var(--font-body); font-weight: 700; font-size: 11px; margin-left: 4px; opacity: .75; }
+.strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(68px, 1fr));
+  gap: 8px;
+  background: var(--card);
+  border-radius: 18px;
+  padding: 12px;
+  box-shadow: 0 8px 18px var(--shadow);
+}
+.strip button {
+  position: relative;
+  padding: 0; border: 3px solid transparent; border-radius: 12px;
+  background: var(--bg); cursor: pointer; overflow: hidden;
+  aspect-ratio: 1 / 1;
+}
+.strip button img, .strip button video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.strip button[aria-current="true"] { border-color: var(--accent-deep); }
+.strip button:not([aria-current="true"]) img { opacity: .8; }
+.strip button:hover img { opacity: 1; }
+.strip button:focus-visible { outline: 3px dashed var(--ink); outline-offset: 2px; }
+.strip .vmark { position: absolute; right: 3px; bottom: 3px; font-size: 10px; background: var(--accent); color: var(--on-color); border-radius: 999px; padding: 0 6px; }
+.empty { text-align: center; color: var(--muted); padding: 20px 0; margin: 0; grid-column: 1 / -1; }
+
+/* ---------- Stamps page ---------- */
+.lead-small { margin: 0; color: var(--muted); font-size: 13px; }
+.cat { display: grid; gap: 12px; }
+.cat-head { display: flex; align-items: center; gap: 10px; margin: 0; font-family: var(--font-pop); font-weight: 400; font-size: 18px; }
+.cat-head .num { font-family: var(--font-body); font-weight: 700; font-size: 12px; color: var(--muted); }
+.cat-head::after { content: ""; flex: 1; border-top: 3px dotted var(--accent); }
+.packs { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 14px; }
+.pack {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 10px;
+  background: var(--card);
+  border-radius: 26px;
+  padding: 16px;
+  box-shadow: 0 10px 24px var(--shadow);
+  min-width: 0;
+}
+.pack .preview {
+  display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 4px;
+  background: var(--bg); border-radius: 14px; padding: 8px;
+}
+.pack .preview img { width: 100%; aspect-ratio: 1 / 1; object-fit: contain; display: block; }
+.pack .preview .ph {
+  grid-column: 1 / -1; aspect-ratio: 4 / 1;
+  display: grid; place-items: center;
+  font-family: var(--font-pop); font-size: 12px; color: var(--muted);
+}
+.pack h3 { margin: 0; font-family: var(--font-pop); font-weight: 400; font-size: 16px; line-height: 1.4; }
+.pack .meta { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+.pack .chip { font-size: 11px; font-weight: 700; border-radius: 999px; padding: 1px 10px; background: var(--bg); color: var(--muted); }
+.pack .chip.kind { background: var(--mint); color: var(--on-color); }
+.pack.k-emoji .chip.kind { background: var(--honey); }
+.pack p { margin: 6px 0 0; font-size: 13px; color: var(--muted); }
+.pack .buy {
+  justify-self: start;
+  font-family: var(--font-pop); font-size: 13px;
+  background: var(--mint); color: var(--on-color);
+  border-radius: 999px; padding: 5px 16px;
+  text-decoration: none;
+  box-shadow: 0 4px 0 rgba(80, 45, 20, .15);
+}
+.pack.k-emoji .buy { background: var(--honey); }
+.pack .buy:focus-visible { outline: 3px dashed var(--ink); outline-offset: 3px; }
+
+footer { text-align: center; font-size: 12px; color: var(--muted); }
+footer .paws { color: var(--accent-deep); letter-spacing: .4em; }
+
+/* ---------- Responsive ---------- */
+/* ---------- 2匹の丸窓（トップ） ---------- */
+.duo { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 6px; align-items: center; justify-self: center; width: min(100%, 400px); }
+.duo .cat { display: grid; justify-items: center; gap: 6px; }
+.duo .cat:nth-child(2) { margin-top: 70px; }
+.duo .frame {
+  width: 100%; aspect-ratio: 1 / 1; max-width: 100%;
+  border-radius: 58% 42% 47% 53% / 52% 46% 54% 48%;
+  overflow: hidden;
+  border: 6px solid var(--card);
+  box-shadow: 0 0 0 4px var(--accent), 0 12px 26px var(--shadow);
+  background: var(--accent);
+  animation: blob 9s ease-in-out infinite;
+}
+.duo .cat:nth-child(2) .frame { animation-delay: -4s; }
+.duo .frame img, .duo .frame svg { width: 100%; height: 100%; object-fit: cover; display: block; }
+.duo .tag { font-family: var(--font-pop); font-size: 13px; background: var(--card); border: 2px solid var(--accent); border-radius: 999px; padding: 0 12px; }
+.duo .sticker.s1 { top: -4%; right: 2%; }
+.duo .sticker.s2 { bottom: 4%; left: -2%; }
+
+/* ---------- 2匹のプロフィール ---------- */
+.profiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.pcard {
+  background: var(--card);
+  border-radius: 28px;
+  padding: 18px 20px;
+  box-shadow: 0 10px 24px var(--shadow);
+  display: grid; gap: 10px; align-content: start;
+  min-width: 0;
+}
+.pcard h3 { margin: 0; display: flex; align-items: baseline; gap: 8px; font-family: var(--font-pop); font-weight: 400; font-size: 22px; }
+.pcard h3 small { font-family: var(--font-body); font-weight: 700; font-size: 12px; color: var(--muted); }
+.pcard .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.pcard .facts div:last-child { grid-column: 1 / -1; }
+.pcard .say { margin: 0; font-size: 13px; color: var(--accent-deep); font-weight: 700; }
+.story { margin: 0; text-align: center; font-size: 14px; color: var(--muted); }
+.story b { font-family: var(--font-pop); font-weight: 400; color: var(--ink); }
+.album-card .thumbs .ph { width: 84px; height: 104px; border: 5px solid var(--card); border-radius: 6px; background: var(--accent); box-shadow: 0 6px 14px var(--shadow); margin-right: -14px; display: grid; place-items: center; font-size: 26px; }
+.album-card .thumbs .ph:nth-child(1) { transform: rotate(-6deg); }
+.album-card .thumbs .ph:nth-child(2) { transform: rotate(3deg) translateY(-6px); }
+.album-card .thumbs .ph:nth-child(3) { transform: rotate(-2deg); }
+.book-empty { margin: 0; text-align: center; color: var(--muted); font-family: var(--font-pop); font-size: 15px; line-height: 1.8; }
+
+/* =====================================================================
+   テイスト：ひだまりのパッチワーク
+   リリーのおうちと同じ骨組みのまま、見た目だけを変えるための上書き。
+   ・背景は水玉ではなくギンガムチェック
+   ・カードやボタンは「ぬい目（点線）」のあるワッペン風
+   ・写真は丸ではなく、少し傾けた角丸の四角
+   ・見出しは手書き風の書体＋マーカー線
+   ===================================================================== */
+body {
+  background-image:
+    linear-gradient(90deg, color-mix(in srgb, var(--accent) 22%, transparent) 50%, transparent 50%),
+    linear-gradient(color-mix(in srgb, var(--accent) 22%, transparent) 50%, transparent 50%);
+  background-size: 40px 40px;
+  background-position: 0 0;
+}
+
+/* リンク集：ぬい目つきのワッペン */
+.link {
+  border: 2px dashed var(--c);
+  border-radius: 14px;
+  box-shadow: 0 0 0 5px var(--card), 0 6px 16px var(--shadow);
+}
+.link:hover { transform: translateY(-3px); box-shadow: 0 0 0 5px var(--card), 0 10px 20px var(--shadow); }
+.link:active { transform: translateY(1px); box-shadow: 0 0 0 5px var(--card), 0 3px 8px var(--shadow); }
+.link .icon { border-radius: 12px; }
+.link .badge { border-radius: 4px; transform: rotate(6deg); background: var(--accent-deep); color: #fff; }
+
+/* 2匹の写真：傾けた角丸の四角＋ぬい目 */
+.duo .frame {
+  border-radius: 26px;
+  animation: none;
+  border: 7px solid var(--card);
+  box-shadow: 0 10px 24px var(--shadow);
+  outline: 2px dashed var(--accent-deep);
+  outline-offset: -14px;
+}
+.duo .cat:nth-child(1) .frame { transform: rotate(-4deg); }
+.duo .cat:nth-child(2) .frame { transform: rotate(3deg); }
+.duo .tag { border-radius: 6px; border-style: dashed; border-color: var(--accent-deep); }
+
+/* ステッカーはマスキングテープ風 */
+.sticker {
+  border-radius: 3px;
+  background: color-mix(in srgb, var(--honey) 85%, transparent);
+  box-shadow: 0 2px 4px var(--shadow);
+  font-family: var(--font-pop);
+}
+.sticker.s2 { background: color-mix(in srgb, var(--mint) 85%, transparent); }
+
+/* 見出し：手書き風＋マーカー */
+.hello {
+  display: block;
+  width: fit-content;
+  margin-bottom: 10px;
+  border: none;
+  border-radius: 4px;
+  background: var(--accent-deep);
+  color: #fff;
+}
+h1 {
+  text-shadow: none;
+  display: inline;
+  background: linear-gradient(transparent 64%, var(--accent) 64%, var(--accent) 92%, transparent 92%);
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  line-height: 1.25;
+  word-break: keep-all;
+  font-size: clamp(42px, 7.5vw, 72px);
+}
+.intro h1 + .en { margin-top: 10px; }
+.en { letter-spacing: .18em; color: var(--accent-deep); }
+
+/* プロフィール・アルバム入口・スタンプ：ワッペン風のカード */
+.pcard, .album-card, .pack, .strip {
+  border-radius: 20px;
+  outline: 2px dashed var(--accent);
+  outline-offset: -9px;
+}
+.pcard h3 { font-family: var(--font-pop); }
+.pcard h3 small { background: var(--accent); color: var(--on-color); border-radius: 4px; padding: 0 8px; }
+.facts div { border-radius: 10px; }
+.section-title, .cat-head { color: var(--accent-deep); }
+.cat-head::after { border-top-style: dashed; border-top-color: var(--accent); }
+
+/* ライブ配信：黒茶の帯 */
+.cm {
+  background: var(--ink);
+  color: var(--bg);
+  border: none;
+  border-radius: 18px;
+  box-shadow: 0 10px 22px var(--shadow);
+  outline: 2px dashed color-mix(in srgb, var(--bg) 45%, transparent);
+  outline-offset: -8px;
+}
+.cm:hover { box-shadow: 0 14px 26px var(--shadow); }
+.cm:active { box-shadow: 0 4px 10px var(--shadow); }
+.cm .play { background: var(--accent-deep); color: #fff; border-radius: 12px; }
+.cm .tag { color: var(--accent); }
+.cm .go { background: var(--accent); border-radius: 8px; }
+
+/* ボタン類：角丸の四角に */
+.album-card .go, .pack .buy, .back, .book-nav button, .tabs button { border-radius: 10px; }
+.back, .book-nav button { border-width: 2px; border-style: dashed; box-shadow: 0 4px 10px var(--shadow); }
+.book-nav button:active { box-shadow: 0 1px 4px var(--shadow); }
+.album-card .thumbs img, .album-card .thumbs .ph { border-radius: 12px; }
+.album-title { text-shadow: none; background: linear-gradient(transparent 64%, var(--accent) 64%, var(--accent) 92%, transparent 92%); }
+.strip button { border-radius: 10px; }
+
+/* 見開きアルバム：表紙をオレンジに */
+.book { background: var(--accent-deep); box-shadow: 0 14px 30px var(--shadow); }
+
+/* 左下のツール */
+.tools .seg, .tools .bgm { border-radius: 12px; border-style: dashed; border-width: 2px; box-shadow: 0 0 0 4px var(--card), 0 8px 18px var(--shadow); }
+.tools .seg { border-color: var(--accent-deep); }
+.tools .seg button[aria-pressed="true"] { background: var(--accent-deep); color: #fff; }
+.tools .bgm { border-color: var(--accent-deep); }
+.tools .bgm[aria-pressed="true"] { background: var(--accent); }
+
+footer .paws { color: var(--accent-deep); }
+
+/* 猫紹介カードの見出し（イラストのアイコンつき） */
+.phead { display: flex; align-items: center; gap: 12px; }
+.phead .face {
+  flex: none; width: 64px; height: 64px;
+  border-radius: 16px; overflow: hidden;
+  border: 3px solid var(--card);
+  box-shadow: 0 0 0 2px var(--accent), 0 4px 10px var(--shadow);
+  transform: rotate(-4deg);
+}
+.pcard:nth-child(2) .phead .face { transform: rotate(4deg); }
+.phead .face svg { width: 100%; height: 100%; display: block; }
+
+/* =====================================================================
+   アルバム：ひだまりの物干し
+   リリーのおうちの「見開きアルバム」とは別の見せ方。
+   ・上：濃い茶色のフェルトボードに、えらんだ写真をクリップでつるし、横にメモを貼る
+   ・下：物干しロープにつるした小さなポラロイドの一覧（横にスクロール）
+   ===================================================================== */
+.board {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: 32px;
+  align-items: center;
+  background: #3a2a22;
+  border-radius: 24px;
+  padding: 56px 36px 36px;
+  box-shadow: 0 14px 30px var(--shadow);
+  outline: 2px dashed rgba(253, 243, 234, .35);
+  outline-offset: -10px;
+}
+.board::before {
+  content: "";
+  position: absolute; top: 30px; left: 28px; right: 28px;
+  border-top: 3px dotted #f3c9a4;
+}
+/* ボタン｜写真｜ボタン の3列。ボタンは写真に重ならない */
+.stage { display: grid; grid-template-columns: auto minmax(0, max-content) auto; justify-content: center; align-items: center; gap: 26px; width: 100%; }
+.hang { position: relative; grid-column: 2; grid-row: 1; min-width: 0; transform-origin: top center; animation: sway 7s ease-in-out infinite; }
+.nav-btn {
+  position: relative; z-index: 3; grid-row: 1;
+  width: 46px; height: 46px;
+  display: grid; place-items: center;
+  border: none; border-radius: 50%;
+  background: rgba(255, 253, 249, .94); color: #3a2a22;
+  font-family: var(--font-body); font-size: 28px; line-height: 1; font-weight: 700;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, .35);
+  cursor: pointer;
+}
+.nav-btn:hover { background: #f3c9a4; }
+.nav-btn:active { transform: scale(.94); }
+.nav-btn:focus-visible { outline: 3px dashed #f3c9a4; outline-offset: 3px; }
+.nav-prev { grid-column: 1; }
+.nav-next { grid-column: 3; }
+@keyframes sway { 0%, 100% { transform: rotate(-1.2deg); } 50% { transform: rotate(1deg); } }
+.clip {
+  position: absolute; top: -34px; left: 50%; z-index: 2;
+  width: 16px; height: 44px; transform: translateX(-50%);
+  background: #f2cf7e; border-radius: 4px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, .35), inset 0 -10px 0 rgba(0, 0, 0, .08);
+}
+.board .snap {
+  margin: 0;
+  background: #fffdf9;
+  padding: 10px;
+  border-radius: 3px;
+  box-shadow: 0 16px 30px rgba(0, 0, 0, .4);
+}
+.board .snap::before, .board .snap::after { content: none; }
+.board .snap img, .board .snap video { display: block; max-width: 100%; max-height: 430px; width: auto; height: auto; border-radius: 2px; }
+.board .book-empty { color: #3a2a22; padding: 60px 30px; }
+
+.memo {
+  position: relative;
+  display: grid; gap: 10px; align-content: start;
+  background-color: var(--card);
+  background-image: repeating-linear-gradient(transparent 0 31px, var(--dot) 31px 33px);
+  border-radius: 6px;
+  padding: 30px 26px 24px;
+  transform: rotate(1.5deg);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, .3);
+}
+.memo::before {
+  content: "";
+  position: absolute; top: -12px; left: 50%;
+  width: 96px; height: 24px;
+  transform: translateX(-50%) rotate(-3deg);
+  background: color-mix(in srgb, var(--accent) 85%, transparent);
+  box-shadow: 0 1px 3px var(--shadow);
+}
+
+/* 物干しロープの一覧 */
+.line {
+  background: var(--card);
+  border-radius: 20px;
+  padding: 18px 16px 20px;
+  outline: 2px dashed var(--accent);
+  outline-offset: -9px;
+  overflow-x: auto;
+  box-shadow: 0 8px 18px var(--shadow);
+}
+.strip.clothes {
+  position: relative;
+  display: flex; gap: 22px;
+  width: max-content; min-width: 100%;
+  padding: 26px 14px 10px;
+  background: none; box-shadow: none; outline: none; border-radius: 0;
+}
+.strip.clothes::before {
+  content: "";
+  position: absolute; top: 12px; left: 0; right: 0;
+  border-top: 3px dotted var(--accent-deep);
+}
+.strip.clothes button {
+  position: relative; flex: none;
+  width: 104px; aspect-ratio: auto; overflow: visible;
+  padding: 6px 6px 0; border: none; border-radius: 3px;
+  background: #fffdf9;
+  box-shadow: 0 6px 14px var(--shadow);
+  transform-origin: top center;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.strip.clothes button:nth-child(odd) { transform: rotate(-4deg); }
+.strip.clothes button:nth-child(even) { transform: rotate(3deg); }
+.strip.clothes button::before {
+  content: "";
+  position: absolute; top: -18px; left: 50%;
+  width: 9px; height: 24px; transform: translateX(-50%);
+  background: #f2cf7e; border-radius: 2px;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, .25);
+}
+.strip.clothes button img, .strip.clothes button video { width: 100%; height: auto; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 2px; opacity: 1; }
+.strip.clothes button .cap {
+  display: block;
+  font-family: var(--font-pop); font-size: 11px; color: #3a2a22;
+  text-align: center; padding: 5px 2px 7px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.strip.clothes button:hover { transform: rotate(0) translateY(4px); }
+.strip.clothes button[aria-current="true"] {
+  transform: rotate(0) translateY(8px) scale(1.06);
+  box-shadow: 0 0 0 3px var(--accent-deep), 0 10px 18px var(--shadow);
+}
+.strip.clothes button:focus-visible { outline: 3px dashed var(--ink); outline-offset: 4px; }
+.strip.clothes .empty { width: 100%; }
+
+@media (max-width: 760px) {
+  .links { gap: 8px; }
+  .link { flex-direction: column; text-align: center; gap: 4px; padding: 8px 4px; border-radius: 16px; }
+  .link .icon { width: 36px; height: 36px; }
+  .link .icon svg { width: 20px; height: 20px; }
+  .link b { font-size: 10px; }
+  .link small { display: none; }
+  .hero { grid-template-columns: 1fr; gap: 18px; text-align: center; }
+  .photo { width: min(78%, 320px); }
+  .lead { margin-inline: auto; }
+  .hello { margin-inline: auto; }
+  .profile { grid-template-columns: 1fr; padding: 18px 16px; gap: 22px; }
+  .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .facts div:last-child { grid-column: 1 / -1; }
+  .profiles { grid-template-columns: 1fr; }
+  .board { grid-template-columns: 1fr; gap: 18px; padding: 46px 10px 18px; }
+  .board::before { top: 24px; left: 16px; right: 16px; }
+  .clip { top: -28px; height: 38px; }
+  .board .snap { padding: 7px; }
+  .board .snap img, .board .snap video { max-height: 48vh; }
+  .nav-btn { width: 38px; height: 38px; font-size: 24px; }
+  .stage { gap: 18px; }
+  .hang { animation: none; }
+  .memo { gap: 6px; padding: 18px 16px 12px; transform: rotate(.8deg); background-image: none; }
+  .memo .kind-chip { display: none; }
+  .memo .book-cap { font-size: 20px; }
+  .memo .book-note { line-height: 1.7; font-size: 13px; }
+  .strip.clothes button { width: 88px; }
+  .duo { width: min(92%, 340px); }
+  .duo .cat:nth-child(2) { margin-top: 50px; }
+  .cm { border-radius: 26px; padding: 12px 14px; gap: 12px; }
+  .cm .go { display: none; }
+  .album-card { grid-template-columns: 1fr; text-align: center; }
+  .thumbs { justify-content: center; padding-right: 14px; }
+  .book { grid-template-columns: 1fr; padding: 10px; }
+  .book::before { display: none; }
+  .page { min-height: 0; padding: 18px 14px; }
+  .page.left { border-radius: 10px 10px 4px 4px; }
+  .page.right { border-radius: 4px 4px 10px 10px; padding-inline: 18px; }
+  .snap img, .snap video { max-height: 42vh; }
+  .strip { grid-template-columns: repeat(auto-fill, minmax(56px, 1fr)); padding: 10px; }
+}
+/* ---------- 言語切替・BGM（全ページ共通、左下に固定。右下はNetlifyのバッジと重なるため） ---------- */
+.tools {
+  position: fixed;
+  left: 12px;
+  bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+  z-index: 10;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.tools .seg {
+  display: flex;
+  background: var(--card);
+  border: 3px solid var(--accent);
+  border-radius: 999px;
+  box-shadow: 0 4px 0 var(--accent), 0 8px 18px var(--shadow);
+  overflow: hidden;
+}
+.tools .seg button, .tools .bgm {
+  font: inherit; font-family: var(--font-pop); font-size: 12px;
+  color: var(--ink); background: transparent;
+  border: none; padding: 5px 12px; cursor: pointer;
+}
+.tools .seg button[aria-pressed="true"] { background: var(--accent); color: var(--on-color); }
+.tools .bgm {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--card);
+  border: 3px solid var(--honey);
+  border-radius: 999px;
+  box-shadow: 0 4px 0 var(--honey), 0 8px 18px var(--shadow);
+}
+.tools .bgm .note { display: inline-block; }
+.tools .bgm[aria-pressed="true"] { background: var(--honey); color: var(--on-color); }
+.tools .bgm[aria-pressed="true"] .note { animation: bob 1s ease-in-out infinite; }
+.tools .bgm:disabled { cursor: default; opacity: .75; }
+.tools button:focus-visible { outline: 3px dashed var(--ink); outline-offset: 2px; }
+@keyframes bob { 50% { transform: translateY(-3px) rotate(-10deg); } }
+.wrap { padding-bottom: 80px; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
