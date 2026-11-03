@@ -57,7 +57,8 @@
 <script>
 /* 写真・動画を増やすときは、ここに1つずつ追加します（新しいものを上に）。
    写真: { type: "photo", src: "images/ファイル名.jpg", caption: { ja: "ひとこと", en: "English" }, note: { ja: "説明", en: "English" } }
-   動画: { type: "video", src: "videos/ファイル名.mp4", poster: "images/サムネイル.jpg", caption: { ja: "…", en: "…" } }
+   動画: { type: "video", src: "images/ファイル名.mp4", caption: { ja: "ひとこと" }, note: { ja: "説明" } }
+        （サムネイル画像は不要です。用意した場合は poster: "images/サムネイル.jpg" を足せます）
    英語を書かない場合は日本語が表示されます */
 const items = [
   { type: "photo", src: "images/choco-sit.jpg",
@@ -116,9 +117,17 @@ function renderStrip() {
     const b = document.createElement("button");
     b.type = "button";
     b.setAttribute("aria-label", pick(item.caption));
-    const img = document.createElement("img");
-    img.src = item.poster || item.src; img.alt = ""; img.loading = "lazy";
-    b.append(img);
+    if (item.type === "video" && !item.poster) {
+      // サムネイル画像がない動画は、動画の最初のほうの1コマを小さく表示する
+      const v = document.createElement("video");
+      v.src = item.src + "#t=0.5"; v.muted = true; v.playsInline = true; v.preload = "metadata";
+      v.setAttribute("aria-hidden", "true");
+      b.append(v);
+    } else {
+      const img = document.createElement("img");
+      img.src = item.poster || item.src; img.alt = ""; img.loading = "lazy";
+      b.append(img);
+    }
     const cap = document.createElement("span");
     cap.className = "cap"; cap.textContent = pick(item.caption);
     b.append(cap);
@@ -146,8 +155,9 @@ function select(idx) {
   snap.innerHTML = "";
   if (item.type === "video") {
     const v = document.createElement("video");
-    v.src = item.src; v.controls = true; v.playsInline = true;
-    if (item.poster) v.poster = item.poster;
+    v.controls = true; v.playsInline = true; v.preload = "metadata";
+    if (item.poster) { v.src = item.src; v.poster = item.poster; }
+    else v.src = item.src + "#t=0.5";  // サムネイルがなくても最初の1コマを表示する
     snap.append(v);
   } else {
     const img = document.createElement("img");
