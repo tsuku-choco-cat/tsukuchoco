@@ -107,7 +107,7 @@ document.querySelectorAll(".tabs button").forEach(btn => {
     document.querySelectorAll(".tabs button").forEach(b => b.setAttribute("aria-pressed", b === btn));
     shown = f === "all" ? items : items.filter(i => i.type === f);
     renderStrip();
-    select(0);
+    const no = Number(new URLSearchParams(location.search).get("no")); select(Number.isInteger(no) && no >= 1 && no <= items.length ? no - 1 : 0);
   });
 });
 
@@ -192,7 +192,7 @@ document.addEventListener("keydown", e => {
 SITE.onLang(() => { renderStrip(); if (shown.length) select(current); });
 
 renderStrip();
-select(0);
+const no = Number(new URLSearchParams(location.search).get("no")); select(Number.isInteger(no) && no >= 1 && no <= items.length ? no - 1 : 0);
 </script>
 </body>
 </html>
