@@ -55,19 +55,12 @@
 
 <script src="site.js"></script>
 <script>
-/* 写真・動画を増やすときは、ここに1つずつ追加します（新しいものを上に）。
+/* 写真・動画を増やすときは、ここに1つずつ追加します（新しいものは最後に足します）。
    写真: { type: "photo", src: "images/ファイル名.jpg", caption: { ja: "ひとこと", en: "English" }, note: { ja: "説明", en: "English" } }
    動画: { type: "video", src: "images/ファイル名.mp4", caption: { ja: "ひとこと" }, note: { ja: "説明" } }
         （サムネイル画像は不要です。用意した場合は poster: "images/サムネイル.jpg" を足せます）
    英語を書かない場合は日本語が表示されます */
 const items = [
-  { type: "photo", src: "images/tsukushi-bekko.jpg",
-    caption: { ja: "べっ甲色の輝き✨", en: "Tortoiseshell glow✨" },
-    note: { ja: "つくし：窓辺で陽の光を浴びてキラキラ輝いています🐱サビ猫の魅力全開にゃ👍🏻✨", en: "Tsukushi: basking in the sunlight by the window and sparkling away🐱 Tortoiseshell charm in full bloom👍🏻✨" },
-    alt: { ja: "窓辺で陽の光を浴びるサビ猫のつくし", en: "Tsukushi, a tortoiseshell cat, basking in the sunlight by the window" } },
-  { type: "video", src: "images/tsukushi_amae_v13.mp4", poster: "images/tsukushi_amae_thumbnail_v10.jpg",
-  caption: { ja: "にゃーにゃー🐱" },
-  note: { ja: "つくし：\nいつにも増して、甘えんぼうなつくちゃん🐱\nおかーしゃんは胸熱で泣いてしまったよ🥹" } },
   { type: "photo", src: "images/choco-sit.jpg",
     caption: { ja: "ちょこんとおすわり", en: "Sitting pretty" },
     note: { ja: "ちょこ：名前のとおり、ちょこんと座ってこちらをじっと見ています。", en: "Choco: true to her name, sitting neatly and watching us." },
@@ -90,7 +83,14 @@ const items = [
     alt: { ja: "床の上で体をのばすつくし", en: "Tsukushi stretching out on the floor" } },
   { type: "photo", src: "images/choco-house.jpg",
     caption: { ja: "気になるにゃ", en: "I'm curious about" },
-    note: { ja: "ちょこ：我が家に来て3日目。9月15日。ケージの外が気になるにゃ。", en: "Choco:Day 3 at my new home. September 15th. I’m so curious about what’s outside the cage!" } }
+    note: { ja: "ちょこ：我が家に来て3日目。9月15日。ケージの外が気になるにゃ。", en: "Choco:Day 3 at my new home. September 15th. I’m so curious about what’s outside the cage!" } },
+  { type: "video", src: "images/tsukushi_amae_v13.mp4", poster: "images/tsukushi_amae_thumbnail_v10.jpg",
+  caption: { ja: "にゃーにゃー🐱" },
+  note: { ja: "つくし：\nいつにも増して、甘えんぼうなつくちゃん🐱\nおかーしゃんは胸熱で泣いてしまったよ🥹" } },
+  { type: "photo", src: "images/tsukushi-bekko.jpg",
+    caption: { ja: "べっ甲色の輝き✨", en: "Tortoiseshell glow✨" },
+    note: { ja: "つくし：窓辺で陽の光を浴びてキラキラ輝いています🐱サビ猫の魅力全開にゃ👍🏻✨", en: "Tsukushi: basking in the sunlight by the window and sparkling away🐱 Tortoiseshell charm in full bloom👍🏻✨" },
+    alt: { ja: "窓辺で陽の光を浴びるサビ猫のつくし", en: "Tsukushi, a tortoiseshell cat, basking in the sunlight by the window" } }
   // 増やすときは、ここに { type: "photo", src: "images/ファイル名.jpg", caption: { ja: "…", en: "…" }, note: { ja: "…", en: "…" } } を追加します
 ];
 
