@@ -102,7 +102,7 @@ const items = [
 const pick = v => (v && typeof v === "object") ? (v[SITE.lang] || v.ja || "") : (v || "");
 const strip = document.getElementById("strip");
 const snap = document.getElementById("snap");
-let shown = items;
+let shown = [...items].reverse();
 let current = 0;
 
 document.querySelectorAll(".tabs button").forEach(btn => {
@@ -110,9 +110,9 @@ document.querySelectorAll(".tabs button").forEach(btn => {
   btn.querySelector(".count").textContent = f === "all" ? items.length : items.filter(i => i.type === f).length;
   btn.addEventListener("click", () => {
     document.querySelectorAll(".tabs button").forEach(b => b.setAttribute("aria-pressed", b === btn));
-    shown = f === "all" ? items : items.filter(i => i.type === f);
+    shown = (f === "all" ? [...items] : items.filter(i => i.type === f)).reverse();
     renderStrip();
-    const no = Number(new URLSearchParams(location.search).get("no")); select(Number.isInteger(no) && no >= 1 && no <= items.length ? no - 1 : 0);
+    selectFromQuery();
   });
 });
 
@@ -153,7 +153,7 @@ function renderStrip() {
   });
 }
 
-function select(idx) {
+function selectFromQuery() { const no = Number(new URLSearchParams(location.search).get("no")); if (Number.isInteger(no) && no >= 1 && no <= items.length) { const idx = shown.indexOf(items[no - 1]); select(idx >= 0 ? idx : 0); } else { select(0); } } function select(idx) {
   if (!shown.length) {
     snap.innerHTML = '<p class="book-empty">' + SITE.t("album.bookempty") + '</p>';
     document.getElementById("page-no").textContent = "No. 00 / 00";
@@ -180,8 +180,8 @@ function select(idx) {
   const btn = strip.querySelectorAll("button")[current];
   const line = strip.parentElement;
   if (btn && line) line.scrollTo({ left: btn.offsetLeft - (line.clientWidth - btn.offsetWidth) / 2, behavior: "smooth" });
-  const n = String(current + 1).padStart(2, "0");
-  document.getElementById("page-no").textContent = `No. ${n} / ${String(shown.length).padStart(2, "0")}`;
+  const n = String(items.indexOf(item) + 1).padStart(2, "0");
+  document.getElementById("page-no").textContent = `No. ${n} / ${String(items.length).padStart(2, "0")}`;
   document.getElementById("kind-chip").textContent = SITE.t(item.type === "video" ? "album.video" : "album.photo");
   document.getElementById("book-cap").textContent = pick(item.caption);
   document.getElementById("book-note").textContent = pick(item.note);
@@ -197,7 +197,7 @@ document.addEventListener("keydown", e => {
 SITE.onLang(() => { renderStrip(); if (shown.length) select(current); });
 
 renderStrip();
-const no = Number(new URLSearchParams(location.search).get("no")); select(Number.isInteger(no) && no >= 1 && no <= items.length ? no - 1 : 0);
+selectFromQuery();
 </script>
 </body>
 </html>
